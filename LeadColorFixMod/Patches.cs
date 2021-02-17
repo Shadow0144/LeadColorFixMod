@@ -253,13 +253,21 @@ namespace LeadColorFixMod
             Substance moltenLead = substanceTable.GetSubstance(SimHashes.MoltenLead);
             Substance leadGas = substanceTable.GetSubstance(SimHashes.LeadGas);
 
+            // Color controls the color of the liquid and gas
+            // Conduit color controls the color of the pumped liquid and gas
+            // UI color controls the overlay color
             lead.uiColour = leadUIColor;
             moltenLead.uiColour = leadUIColor;
-            //moltenLead.material.color = leadColor;
+            moltenLead.conduitColour = leadUIColor;
+            moltenLead.colour = leadUIColor;
             leadGas.uiColour = leadUIColor;
-            //leadGas.material.color = leadColor;
+            leadGas.conduitColour = leadUIColor;
+            leadGas.colour = leadUIColor;
         }
     }
+
+    // Note: The liquid and gas don't have a material
+    // Their anim is their swept container
 
     [HarmonyPatch(typeof(Db))]
     [HarmonyPatch(nameof(Db.Initialize))]
