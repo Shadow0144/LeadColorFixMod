@@ -2,7 +2,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -241,24 +240,7 @@ namespace LeadColorFixMod
                 }
             }
 
-            Color32 leadUIColor = new Color32(102, 2, 60, 255);
-
-            // Fix the liquid and gas colors
-            Substance moltenLead = substanceTable.GetSubstance(SimHashes.MoltenLead);
-            Substance leadGas = substanceTable.GetSubstance(SimHashes.LeadGas);
-
-            // Note: The liquid and gas don't have a material
-            // Their anim is their swept container
-            // Color controls the color of the liquid and gas
-            // Conduit color controls the color of the pumped liquid and gas
-            // UI color controls the overlay color
-            lead.uiColour = leadUIColor;
-            moltenLead.uiColour = leadUIColor;
-            moltenLead.conduitColour = leadUIColor;
-            moltenLead.colour = leadUIColor;
-            leadGas.uiColour = leadUIColor;
-            leadGas.conduitColour = leadUIColor;
-            leadGas.colour = leadUIColor;
+            
         }
     }
 
@@ -324,11 +306,43 @@ namespace LeadColorFixMod
             Material leadMaterial = new Material(tungsten.material);
             leadMaterial.name = "matLead";
             leadMaterial.mainTexture = leadTexture;
-            //leadMaterial.SetColor("_ShineColour", leadShineColor);
-            //leadMaterial.SetColor("_ColourTint", leadColor);
-            //leadMaterial.SetColor("_SpecColor", leadSpecColor);
+            Color shine = leadMaterial.GetColor("_ShineColour");
+            Debug.Log("Original shine color: " + shine.r + ", " + shine.g + ", " + shine.b);
+            leadMaterial.SetColor("_ShineColour", leadShineColor);
+            Color tint = leadMaterial.GetColor("_TintColour");
+            Debug.Log("Original tint color: " + tint.r + ", " + tint.g + ", " + tint.b);
+            leadMaterial.SetColor("_ColourTint", leadColor);
+            Color spec = leadMaterial.GetColor("_SpecColour");
+            Debug.Log("Original spec color: " + spec.r + ", " + spec.g + ", " + spec.b);
+            leadMaterial.SetColor("_SpecColor", leadSpecColor);
             lead.material = leadMaterial;
 
+            Color32 leadUIColor = new Color32(102, 2, 60, 255);
+
+            // Fix the liquid and gas colors
+            Substance moltenLead = ElementLoader.FindElementByHash(SimHashes.MoltenLead).substance;
+            Substance leadGas = ElementLoader.FindElementByHash(SimHashes.LeadGas).substance;
+
+            // Note: The liquid and gas don't have a material
+            // Their anim is their swept container
+            // Color controls the color of the liquid and gas
+            // Conduit color controls the color of the pumped liquid and gas
+            // UI color controls the overlay color
+
+            // Solid
+            lead.uiColour = leadUIColor;
+            lead.conduitColour = leadUIColor;
+            lead.colour = leadUIColor;
+
+            // Liquid
+            moltenLead.uiColour = leadUIColor;
+            moltenLead.conduitColour = leadUIColor;
+            moltenLead.colour = leadUIColor;
+
+            // Gas
+            leadGas.uiColour = leadUIColor;
+            leadGas.conduitColour = leadUIColor;
+            leadGas.colour = leadUIColor;
         }
     }
 }
