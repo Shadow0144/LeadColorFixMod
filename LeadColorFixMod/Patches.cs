@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Reflection;
 using UnityEngine;
@@ -203,22 +204,29 @@ namespace LeadColorFixMod
             leadElement.substance.anim.Initialize(leadAnim, leadBuild, leadTextures);
 
             //Debug.Log(ModPath() + "lead.png");
-            try
+            //String path = ModPath() + "lead.png";
+            //if (File.Exists(path))
             {
-                Texture2D leadMatTexture = Resources.Load(ModPath() + "lead.png") as Texture2D;
-                if (leadMatTexture == null)
+                //KAnimFile leadMatTexture = Assets.GetAnim("mod_lead");
+                
+                /*Texture2D leadMatTexture = new Texture2D(1024, 1024, TextureFormat.DXT5, false);
+                leadMatTexture.Apply(true, true);*/
+                /*if (leadMatTexture == null)
                 {
                     Debug.LogError("Error!!!");
                 }
-                else { }
+                else 
+                {
+                    Debug.LogError("Wow!!!");
+                }*/
             }
-            catch (Exception)
+            /*else
             {
-                Debug.LogError("Exception!");
-            }
+                Debug.Log("File does not exist");
+            }*/
 
             // The material affects the undug texture
-            /*lead.material = new Material(leadElement.substance.material.shader);
+            /*lead.material = new Material(leadElement.substance.material);
             lead.material.CopyPropertiesFromMaterial(gold.material);
             lead.material.mainTexture = leadMatTexture;*/
 
@@ -233,24 +241,14 @@ namespace LeadColorFixMod
                 }
             }
 
-            Color32 leadColor = new Color32(156, 166, 181, 255);
-            Color32 leadShineColor = new Color32(208, 217, 222, 255);
-            Color32 leadSpecColor = new Color32(165, 171, 192, 255);
             Color32 leadUIColor = new Color32(102, 2, 60, 255);
-
-            Material leadMaterial = new Material(lead.material);
-            Debug.Log("Original material name: " + lead.material.name);
-            Debug.Log("Original material texture: " + lead.material.mainTexture.name);
-            leadMaterial.name = "matLead";
-            leadMaterial.SetColor("_ShineColour", leadShineColor);
-            leadMaterial.SetColor("_ColourTint", leadColor);
-            leadMaterial.SetColor("_SpecColor", leadSpecColor);
-            lead.material = leadMaterial;
 
             // Fix the liquid and gas colors
             Substance moltenLead = substanceTable.GetSubstance(SimHashes.MoltenLead);
             Substance leadGas = substanceTable.GetSubstance(SimHashes.LeadGas);
 
+            // Note: The liquid and gas don't have a material
+            // Their anim is their swept container
             // Color controls the color of the liquid and gas
             // Conduit color controls the color of the pumped liquid and gas
             // UI color controls the overlay color
@@ -264,8 +262,6 @@ namespace LeadColorFixMod
         }
     }
 
-    // Note: The liquid and gas don't have a material
-    // Their anim is their swept container
 
     [HarmonyPatch(typeof(Db))]
     [HarmonyPatch(nameof(Db.Initialize))]
@@ -288,15 +284,7 @@ namespace LeadColorFixMod
             Texture2D[] allTextures = Resources.FindObjectsOfTypeAll<Texture2D>();
             TextAsset[] allTextAssets = Resources.FindObjectsOfTypeAll<TextAsset>();
 
-            foreach (Texture2D texture in allTextures)
-            {
-                if (texture.name.Equals("lead_0"))
-                {
-                    leadTexture = texture;
-                    break;
-                }
-                else { }
-            }
+            leadTexture = Assets.GetAnim("mod_lead_kanim").textureList[0];
             List<Texture2D> leadTextures = new List<Texture2D>();
             leadTextures.Add(leadTexture);
 
@@ -325,12 +313,21 @@ namespace LeadColorFixMod
                 else { }
             }
 
-            Element leadElement = ElementLoader.FindElementByHash(SimHashes.Lead);
-            leadElement.substance.anim.Initialize(leadAnim, leadBuild, leadTextures);
-            /////
+            Substance lead = ElementLoader.FindElementByHash(SimHashes.Lead).substance;
+            lead.anim.Initialize(leadAnim, leadBuild, leadTextures);
 
-            //var foo = typeof(SubstanceTable).GetMethod("MethodName", BindingFlags.NonPublic | BindingFlags.Instance(or Static));
-            //foo.Invoke(null, null);
+            Color32 leadColor = new Color32(156, 166, 181, 255);
+            Color32 leadShineColor = new Color32(208, 217, 222, 255);
+            Color32 leadSpecColor = new Color32(165, 171, 192, 255);
+
+            Substance tungsten = ElementLoader.FindElementByHash(SimHashes.Tungsten).substance;
+            Material leadMaterial = new Material(tungsten.material);
+            leadMaterial.name = "matLead";
+            leadMaterial.mainTexture = leadTexture;
+            //leadMaterial.SetColor("_ShineColour", leadShineColor);
+            //leadMaterial.SetColor("_ColourTint", leadColor);
+            //leadMaterial.SetColor("_SpecColor", leadSpecColor);
+            lead.material = leadMaterial;
 
         }
     }
