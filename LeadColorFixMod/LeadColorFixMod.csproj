@@ -55,8 +55,24 @@
     <Compile Include="Patches.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="lead.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="lead_anim.bytes">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="lead_build.bytes">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>xcopy "$(TargetPath)" "$(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\LeadColorFix\" /Y</PostBuildEvent>
+    <PostBuildEvent>xcopy "$(TargetPath)" "$(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\LeadColorFix\" /Y
+xcopy "$(TargetDir)lead.png" "$(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\LeadColorFix\anim\mod_lead\mod_lead\" /Y
+xcopy "$(TargetDir)lead_anim.bytes" "$(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\LeadColorFix\anim\mod_lead\mod_lead\" /Y
+xcopy "$(TargetDir)lead_build.bytes" "$(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\Dev\LeadColorFix\anim\mod_lead\mod_lead\" /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>

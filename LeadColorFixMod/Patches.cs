@@ -299,21 +299,21 @@ namespace LeadColorFixMod
             lead.anim.Initialize(leadAnim, leadBuild, leadTextures);
 
             Color32 leadColor = new Color32(156, 166, 181, 255);
-            Color32 leadShineColor = new Color32(208, 217, 222, 255);
-            Color32 leadSpecColor = new Color32(165, 171, 192, 255);
+            Color32 leadShineColor = new Color32(214, 220, 255, 255);
+            Color32 leadSpecColor = new Color32(206, 215, 231, 255); //new Color32(165, 171, 192, 255);
 
             Substance tungsten = ElementLoader.FindElementByHash(SimHashes.Tungsten).substance;
             Material leadMaterial = new Material(tungsten.material);
             leadMaterial.name = "matLead";
             leadMaterial.mainTexture = leadTexture;
-            Color shine = leadMaterial.GetColor("_ShineColour");
-            Debug.Log("Original shine color: " + shine.r + ", " + shine.g + ", " + shine.b);
+            /*Color shine = leadMaterial.GetColor("_ShineColour");
+            Debug.Log("Original shine color: " + shine.r + ", " + shine.g + ", " + shine.b);*/
             leadMaterial.SetColor("_ShineColour", leadShineColor);
-            Color tint = leadMaterial.GetColor("_TintColour");
-            Debug.Log("Original tint color: " + tint.r + ", " + tint.g + ", " + tint.b);
+            /*Color tint = leadMaterial.GetColor("_TintColour");
+            Debug.Log("Original tint color: " + tint.r + ", " + tint.g + ", " + tint.b);*/
             leadMaterial.SetColor("_ColourTint", leadColor);
-            Color spec = leadMaterial.GetColor("_SpecColour");
-            Debug.Log("Original spec color: " + spec.r + ", " + spec.g + ", " + spec.b);
+            /*Color spec = leadMaterial.GetColor("_SpecColour");
+            Debug.Log("Original spec color: " + spec.r + ", " + spec.g + ", " + spec.b);*/
             leadMaterial.SetColor("_SpecColor", leadSpecColor);
             lead.material = leadMaterial;
 
@@ -332,7 +332,7 @@ namespace LeadColorFixMod
             // Solid
             lead.uiColour = leadUIColor;
             lead.conduitColour = leadUIColor;
-            lead.colour = leadUIColor;
+            lead.colour = Color.white; // leadUIColor;
 
             // Liquid
             moltenLead.uiColour = leadUIColor;
