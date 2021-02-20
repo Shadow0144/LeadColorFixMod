@@ -56,14 +56,16 @@ namespace LeadColorFixMod
             }
 
             // Liquid
-            moltenLead.uiColour = leadUIColor;
-            moltenLead.conduitColour = leadUIColor;
-            moltenLead.colour = leadUIColor;
+            Color32 liquidColor = new Color32(102, 2, 60, 255);
+            moltenLead.uiColour = liquidColor;
+            moltenLead.conduitColour = liquidColor;
+            moltenLead.colour = liquidColor;
 
             // Gas
-            leadGas.uiColour = leadUIColor;
-            leadGas.conduitColour = leadUIColor;
-            leadGas.colour = leadUIColor;
+            Color32 gasColor = new Color32(123, 110, 135, 255);
+            leadGas.uiColour = gasColor;
+            leadGas.conduitColour = gasColor;
+            leadGas.colour = gasColor;
 
             Debug.Log("...Lead fixed.");
         }
