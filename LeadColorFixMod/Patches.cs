@@ -11,13 +11,14 @@ namespace LeadColorFixMod
         {
             Debug.Log("Fixing lead...");
 
-            Color32 leadColor = new Color32(156, 166, 181, 255);
-            Color32 leadUIColor = new Color32(102, 2, 60, 255);
-            Color32 leadShineColor = new Color32(214, 220, 255, 255);
-            Color32 leadSpecColor = new Color32(206, 215, 231, 255); //new Color32(165, 171, 192, 255);
+            Color32 leadUIColor = new Color32(102, 2, 60, 255); // This controls the color on the materials overlay
+            Color32 leadShineColor = new Color32(214, 221, 228, 77); // Affects the shine; note that the alpha isn't full
+            //Color32 leadTintColor = new Color32(255, 255, 255, 255); // Tint should be white
 
-            // Update the lead map tiles with the new texture and colors// Load the texture for the lead map tiles
+            // Update the lead map tiles with the new texture and colors
+            // Load the texture for the lead map tiles
             // If placed in the correct subfolders, the game will automatically load any kanims for us
+            // Note that it needs to be at least two subfolders down or it won't load
             Substance lead = ElementLoader.FindElementByHash(SimHashes.Lead).substance; // This gets the map tile object
             Texture2D leadMapTexture = Assets.GetAnim("mod_lead_kanim").textureList[0]; // We don't need most of the kanim, just the texture
             Substance tungsten = ElementLoader.FindElementByHash(SimHashes.Tungsten).substance;
@@ -25,8 +26,7 @@ namespace LeadColorFixMod
             leadMaterial.name = "matLead";
             leadMaterial.mainTexture = leadMapTexture;
             leadMaterial.SetColor("_ShineColour", leadShineColor);
-            leadMaterial.SetColor("_ColourTint", leadColor);
-            leadMaterial.SetColor("_SpecColor", leadSpecColor);
+            //leadMaterial.SetColor("_ColourTint", leadColor); // Tint should be white
             lead.material = leadMaterial;
 
             // Fix the liquid and gas colors
