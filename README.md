@@ -1,5 +1,5 @@
 # LeadColorFixMod
-Mod for Oxygen Not Included to fix the textures and colors of Lead
+Mod for Oxygen Not Included to fix the textures and colors of lead
 
 <p align="center">
 	<img src="LeadCompare.png" width="50%"/>

@@ -341,3 +341,6 @@ healthchecksdb
 
 # External libraries
 lib/
+
+# Upload folder for the mod
+Steam/
